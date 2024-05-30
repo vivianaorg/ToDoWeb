@@ -5,7 +5,13 @@ from django.conf import settings
 class Category(models.Model):
     category_name = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
-
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.RESTRICT,
+        limit_choices_to={'is_superuser':False},
+        related_name='categorys',
+        null=True
+    )
     def __str__(self):
         return self.category_name
 
@@ -29,9 +35,7 @@ class Task(models.Model):
     fecha_final = models.DateField("Fecha de vencimiento")
     completed = models.BooleanField(default=False)
     priority = models.IntegerField(default=0)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="tasks", default=1
-    )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.RESTRICT,

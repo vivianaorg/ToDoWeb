@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from .models import Profile
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import random
+import string
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -10,6 +12,13 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["username"] = user.username
         return token
 
+class PasswordResetSerializer(serializers.Serializer):
+    new_password = serializers.CharField()
+
+    def set_new_password(self):
+        new_password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        self.validated_data['new_password'] = new_password
+        return new_password
 
 class ProfileCreationSerializer(serializers.ModelSerializer):
     class Meta:
