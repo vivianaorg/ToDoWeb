@@ -23,7 +23,7 @@ class PasswordResetSerializer(serializers.Serializer):
 class ProfileCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["username", "password", "email", "bio"]
+        fields = ["username", "password", "email", "bio", "profile_picture"]
 
     def validate_email(self, value):
         existing_email = Profile.objects.filter(email=value).exists()
@@ -45,5 +45,5 @@ class ProfileCreationSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["id", "username", "email", "bio"]
+        fields = ["id", "username", "email", "bio", "profile_picture"]
         read_only_fields = ["id"]
